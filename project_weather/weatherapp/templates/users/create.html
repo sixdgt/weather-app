@@ -13,8 +13,17 @@
 </head>
 <body>
     <div class="container">
+        {% if success %}
+        <div class="alert alert-success" role="alert">
+            <h1>{{ success }}</h1>
+        </div>
+        {% elif error %}
+        <div class="alert alert-warning" role="alert">
+            <h1>{{ error }}</h1>
+        </div>
+        {% endif %}
         <div class="card">
-            <form>
+            <form method="POST" action="{% url 'user.create' %}">
                 {% csrf_token %}
                 <div class="card-header">
                     <h1>User Register | Weather App</h1>

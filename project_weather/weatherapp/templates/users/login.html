@@ -13,8 +13,17 @@
 </head>
 <body>
     <div class="container">
+        {% if msg_success %}
+        <div class="alert alert-success" role="alert">
+            <h1>{{ msg_success }}</h1>
+        </div>
+        {% elif msg_error %}
+        <div class="alert alert-warning" role="alert">
+            <h1>{{ msg_error }}</h1>
+        </div>
+        {% endif %}
         <div class="card">
-            <form>
+            <form method="post" action="{% url 'user.login' %}">
                 {% csrf_token %}
                 <div class="card-header">
                     <h1>User Login | Weather App</h1>

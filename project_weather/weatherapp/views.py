@@ -1,5 +1,7 @@
 from re import template
 from django.shortcuts import render
+from datetime import datetime
+from weatherapp.models import AppUser
 
 from weatherapp.forms import LoginForm, RegistrationForm
 
@@ -7,18 +9,73 @@ from weatherapp.forms import LoginForm, RegistrationForm
 def landing(request):
     return render(request, 'index.html')
 
-def user_login(request):
+def user_login(request):    
     # creating form object
     lf = LoginForm()
     template = 'users/login.html'
-    context = {'form': lf}
-    return render(request, template, context)
+    if request.method == "POST":
+        # creating use object
+        user = AppUser.objects.get(email=request.POST.get('email'))
+        if request.POST.get('password') == user.password:
+            context = {
+                'form': lf,
+                'msg_success': 'Login Success'
+            }
+            return render(request, template, context)
+        else:
+            context = {
+                'form': lf,
+                'msg_error': 'Invalid email or password'
+            }
+            return render(request, template, context)
+    else:
+        context = {'form': lf}
+        return render(request, template, context)
 
 def user_register(request):
-    rf = RegistrationForm()
     template = 'users/create.html'
-    context = {'form': rf}
-    return render(request, template, context)
+    rf = RegistrationForm()
+    if request.method == "POST":
+        # first_name = request.POST.get('first_name')
+        # middle_name = request.POST.get('middle_name')
+        # last_name = request.POST['last_name']
+        # contact = request.POST.get('contact')
+        # email = request.POST.get('email')
+        # dob = request.POST.get('dob')
+        # password = request.POST.get('password')
+        # address = request.POST.get('address')
+        
+        # creating AppUser model object
+
+        # parameterized constructor
+        # user = AppUser(first_name=first_name,\
+        #     middle_name=middle_name, last_name=last_name,\
+        #         contact=contact, email=email, \
+        #             dob=dob, password=password,address=address,\
+        #                 created_at=datetime.now())
+        # storing data to Model Attribute via object
+
+        # non parameterized constructor
+        user = AppUser()
+        user.first_name = request.POST.get('first_name')
+        user.middle_name = request.POST.get('middle_name')
+        user.last_name = request.POST['last_name']
+        user.contact = request.POST['contact']
+        user.email = request.POST['email']
+        user.dob = request.POST['dob']
+        user.password = request.POST['password']
+        user.address = request.POST['address']
+        user.created_at = datetime.now()
+        # to store data
+        user.save()
+        context = {
+            'form': rf,
+            'success': 'Registered Successfully'
+        }
+        return render(request, template, context)
+    else:
+        context = {'form': rf}
+        return render(request, template, context)
 
 def user_index(request):
     # render() - this function is use to render pages in django
