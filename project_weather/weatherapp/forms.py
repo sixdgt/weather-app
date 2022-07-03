@@ -16,6 +16,6 @@ class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         fields = ('first_name', 'middle_name', 'last_name',\
-            'email', 'contact', 'dob', 'password', 'address')
+            'email', 'contact', 'dob', 'password', 'address', 'lat', 'long')
 
         model = AppUser
