@@ -1,3 +1,4 @@
+from dataclasses import field, fields
 from django import forms
 
 from weatherapp.models import AppUser
@@ -9,7 +10,11 @@ class LoginForm(forms.ModelForm):
         # fields = "__all__"
         # to generate form with limited/custom field
         fields = ('email', 'password')
+        model = AppUser
 
+class ProfileUploadForm(forms.ModelForm):
+    class Meta:
+        fields = ('profile_pic',)
         model = AppUser
 
 class RegistrationForm(forms.ModelForm):

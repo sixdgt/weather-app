@@ -11,7 +11,7 @@ class AppUser(models.Model):
     contact = models.CharField(max_length=20)
     dob = models.DateField()
     password = models.CharField(max_length=100)
-    profile_pic = models.CharField(max_length=200)
+    profile_pic = models.FileField()
     address = models.CharField(max_length=200)
     lat = models.FloatField(null=True, default='0')
     long = models.FloatField(null=True, default='0')

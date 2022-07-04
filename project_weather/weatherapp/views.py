@@ -1,13 +1,14 @@
+import email
 from re import template
 from django.shortcuts import render
-from datetime import datetime
+from datetime import date, datetime
 from weatherapp.models import AppUser
 import random
 # package for sending email
 from django.core.mail import send_mail
 
 # forms
-from weatherapp.forms import LoginForm, RegistrationForm
+from weatherapp.forms import LoginForm, RegistrationForm, ProfileUploadForm
 
 # Create your views here.
 def landing(request):
@@ -93,6 +94,37 @@ def user_register(request):
         return render(request, template, context)
     else:
         context = {'form': rf}
+        return render(request, template, context)
+
+def user_profile(request):
+    if request.session.has_key('user_email'):
+        profile_form = ProfileUploadForm()
+        template = "users/show.html"
+        user = AppUser.objects.get(email=request.session['user_email'])
+        context = {
+            'form': profile_form, 
+            'user_data': user,
+            'page_content_title': 'User Profile',
+            'email': user.email
+            }
+        if request.method == "POST":
+            user_post = ProfileUploadForm(request.POST, request.FILES)
+            if user_post.is_valid():
+                user_post.email = request.POST.get('email')
+                user_post.created_at = datetime.now()
+                user_post.save()
+                return render(request, template, context)
+            else:
+                return render(request, template, context)
+        else:
+            return render(request, template, context)
+    else:
+        template = 'users/login.html'
+        lf = LoginForm()
+        context = {
+                'form': lf,
+                'msg_error': 'Please login first.'
+            }
         return render(request, template, context)
 
 def user_index(request):
