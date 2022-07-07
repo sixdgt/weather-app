@@ -1,3 +1,4 @@
+from datetime import datetime
 from pyexpat import model
 from tkinter import CASCADE
 from django.db import models
@@ -9,7 +10,7 @@ class AppUser(models.Model):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     contact = models.CharField(max_length=20)
-    dob = models.DateField()
+    dob = models.DateField(default=datetime.now())
     password = models.CharField(max_length=100)
     profile_pic = models.FileField()
     address = models.CharField(max_length=200)
@@ -18,7 +19,7 @@ class AppUser(models.Model):
     verification_code = models.CharField(max_length=8)
     is_verified = models.BooleanField(default=False)
     is_removed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(default=0)
+    created_at = models.DateTimeField(default=datetime.now())
     update_at = models.DateTimeField(null=True)
     removed_at = models.DateTimeField(null=True)
 

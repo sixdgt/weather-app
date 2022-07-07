@@ -9,7 +9,14 @@ User | Dashboard
 <hr>
 <div>
     <h3>{{ page_content_body }}</h3>
+    {% load static %}
+    <img src="{% static 'uploads/test.jpg'  %}" alt="" width="100px" height="100px">
     <hr>
     <h3>{{ user_email }}</h3>
 </div>
+{% endblock %}
+
+{% load static %}
+{% block custom_js %}
+    <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
